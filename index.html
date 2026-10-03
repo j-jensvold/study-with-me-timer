@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -12,33 +11,21 @@
 
   <title>Study With Me</title>
 
-
   <style>
-
-    /* =========================================================
-       GLOBAL
-       ========================================================= */
 
     * {
       box-sizing: border-box;
     }
 
-
     html,
     body {
-
       width: 100%;
       height: 100%;
-
       margin: 0;
-
     }
 
-
     body {
-
       background: #613b3f;
-
       color: #f8eee2;
 
       font-family:
@@ -47,9 +34,7 @@
         sans-serif;
 
       display: flex;
-
       justify-content: center;
-
       align-items: center;
 
       overflow: hidden;
@@ -58,40 +43,22 @@
 
       transition:
         opacity 0.4s ease;
-
     }
-
-
-    /* Fade the page when Start is clicked */
 
     body.fade-out {
       opacity: 0;
     }
 
-
-    /* =========================================================
-       START SCREEN
-       ========================================================= */
-
     .start-screen {
-
       width: 100%;
-
       max-width: 850px;
 
       padding: 40px;
 
       text-align: center;
-
     }
 
-
-    /* =========================================================
-       WELCOME
-       ========================================================= */
-
     .welcome {
-
       font-size: 13px;
 
       letter-spacing: 6px;
@@ -99,16 +66,9 @@
       opacity: 0.6;
 
       margin-bottom: 28px;
-
     }
 
-
-    /* =========================================================
-       TITLE
-       ========================================================= */
-
     .title {
-
       font-size:
         clamp(
           34px,
@@ -127,16 +87,9 @@
 
       margin:
         0 0 28px;
-
     }
 
-
-    /* =========================================================
-       SUBTITLE
-       ========================================================= */
-
     .subtitle {
-
       font-size: 14px;
 
       letter-spacing: 3px;
@@ -144,16 +97,9 @@
       opacity: 0.75;
 
       margin-bottom: 52px;
-
     }
 
-
-    /* =========================================================
-       START BUTTON
-       ========================================================= */
-
     .start-button {
-
       display: inline-block;
 
       text-decoration: none;
@@ -184,12 +130,9 @@
         transform 0.15s,
         background 0.2s,
         color 0.2s;
-
     }
 
-
     .start-button:hover {
-
       background:
         transparent;
 
@@ -198,24 +141,14 @@
 
       transform:
         scale(1.04);
-
     }
-
 
     .start-button:active {
-
       transform:
         scale(0.98);
-
     }
 
-
-    /* =========================================================
-       SESSION INFORMATION
-       ========================================================= */
-
     .session-info {
-
       margin-top: 42px;
 
       font-size: 11px;
@@ -223,98 +156,58 @@
       letter-spacing: 3px;
 
       opacity: 0.55;
-
     }
-
-
-    /* =========================================================
-       MOBILE
-       ========================================================= */
 
     @media (max-width: 600px) {
 
       .start-screen {
-
         padding: 25px;
-
       }
-
 
       .subtitle {
-
         line-height: 1.8;
-
       }
 
-
       .start-button {
-
         padding:
           16px 45px;
-
       }
 
     }
 
   </style>
-
 </head>
 
 
 <body>
 
-
   <main class="start-screen">
-
-
-    <!-- =====================================================
-         WELCOME
-         ===================================================== -->
 
     <div class="welcome">
       WELCOME
     </div>
 
-
-    <!-- =====================================================
-         TITLE
-         ===================================================== -->
-
     <h1 class="title">
       STUDY WITH ME
     </h1>
-
-
-    <!-- =====================================================
-         SUBTITLE
-         ===================================================== -->
 
     <div class="subtitle">
       FOCUS • REST • REPEAT
     </div>
 
-
-    <!-- =====================================================
-         START BUTTON
-
-         Opens timer.html in the SAME browser tab.
-         autostart=true tells the timer page to begin.
-         ===================================================== -->
+    <!--
+      Same browser tab.
+      The timer automatically starts because
+      autostart=true is passed in the URL.
+    -->
 
     <a
       class="start-button"
       href="timer.html?autostart=true"
-      onclick="
-        document.body.classList.add('fade-out');
-      "
+      onclick="document.body.classList.add('fade-out');"
     >
       START
     </a>
-
-
-    <!-- =====================================================
-         SESSION INFORMATION
-         ===================================================== -->
 
     <div class="session-info">
 
@@ -324,9 +217,7 @@
 
     </div>
 
-
   </main>
-
 
 </body>
 
