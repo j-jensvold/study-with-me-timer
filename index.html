@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,8 +68,6 @@
     .start-button {
       display: inline-block;
 
-      text-decoration: none;
-
       border: 2px solid #f8eee2;
       background: #f8eee2;
       color: #613b3f;
@@ -76,6 +75,7 @@
       padding: 18px 65px;
       border-radius: 7px;
 
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 15px;
       font-weight: bold;
       letter-spacing: 4px;
@@ -92,6 +92,11 @@
       background: transparent;
       color: #f8eee2;
       transform: scale(1.04);
+    }
+
+    .start-button:focus {
+      outline: 3px solid rgba(248, 238, 226, 0.45);
+      outline-offset: 5px;
     }
 
     .start-button:active {
@@ -137,13 +142,14 @@
       FOCUS • REST • REPEAT
     </div>
 
-    <a
+    <button
+      id="startButton"
       class="start-button"
-      href="timer.html?autostart=true"
-      onclick="document.body.classList.add('fade-out');"
+      type="button"
+      autofocus
     >
       START
-    </a>
+    </button>
 
     <div class="session-info">
       50 MINUTES FOCUS
@@ -154,32 +160,57 @@
   </main>
 
   <script>
-    /*
-      Pressing Enter anywhere on the start screen
-      will start the timer.
-    */
+    const startButton =
+      document.getElementById("startButton");
 
-    document.addEventListener("keydown", function(event) {
+    let starting = false;
 
-      if (event.key === "Enter") {
+    function startStudySession() {
 
-        // Prevent repeated activation from holding Enter
-        if (event.repeat) {
-          return;
-        }
-
-        // Start the fade-out animation
-        document.body.classList.add("fade-out");
-
-        // Go to the timer page after the fade
-        setTimeout(function() {
-          window.location.href =
-            "timer.html?autostart=true";
-        }, 400);
+      // Prevent multiple activations
+      if (starting) {
+        return;
       }
 
-    });
+      starting = true;
+
+      // Fade out the start screen
+      document.body.classList.add("fade-out");
+
+      // Open the timer in the same tab
+      setTimeout(function() {
+
+        window.location.href =
+          "timer.html?autostart=true";
+
+      }, 400);
+    }
+
+    // Clicking START
+    startButton.addEventListener(
+      "click",
+      startStudySession
+    );
+
+    // Pressing Enter anywhere on the page
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter" &&
+          !event.repeat
+        ) {
+
+          event.preventDefault();
+
+          startStudySession();
+        }
+      }
+    );
+
   </script>
 
 </body>
 </html>
+```
