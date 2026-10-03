@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Study With Me Timer</title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+
+      min-height: 100vh;
+
+      background: #613b3f;
+
+      color: #f8eee2;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      opacity: 0;
+
+      animation:
+        pageFadeIn
+        0.7s ease
+        forwards;
+
+    }
+
+
+    @keyframes pageFadeIn {
+
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+
+    }
+
+
+    .page {
+
+      width: 100%;
+
+      max-width: 1200px;
+
+      padding:
+        35px 25px 40px;
+
+      text-align: center;
+
+    }
+
+
+    .title {
+
+      font-size: 18px;
+
+      letter-spacing: 7px;
+
+      font-weight: 600;
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .current-phase {
+
+      min-height: 18px;
+
+      margin-bottom: 28px;
+
+      font-size: 11px;
+
+      letter-spacing: 3px;
+
+      opacity: 0.75;
+
+    }
+
+
+    .timers {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      gap: 65px;
+
+      align-items: start;
+
+    }
+
+
+    .timer-card {
+
+      text-align: center;
+
+      opacity: 0.38;
+
+      transform:
+        scale(0.99);
+
+      transition:
+        opacity 0.45s ease,
+        transform 0.45s ease;
+
+    }
+
+
+    .timer-card.active {
+
+      opacity: 1;
+
+      transform:
+        scale(1.015);
+
+    }
+
+
+    .timer-title {
+
+      font-size: 18px;
+
+      letter-spacing: 5px;
+
+      margin-bottom: 18px;
+
+      font-weight: 500;
+
+    }
+
+
+    .circle-wrapper {
+
+      position: relative;
+
+      width: 340px;
+
+      height: 340px;
+
+      margin: 0 auto;
+
+    }
+
+
+    .circle-svg {
+
+      width: 100%;
+
+      height: 100%;
+
+      display: block;
+
+      overflow: visible;
+
+    }
+
+
+    .circle-background {
+
+      fill: none;
+
+      stroke: #f8eee2;
+
+      stroke-width: 4;
+
+      stroke-dasharray:
+        1 8;
+
+      opacity: 0.95;
+
+    }
+
+
+    .circle-progress {
+
+      fill: none;
+
+      stroke: #f8eee2;
+
+      stroke-width: 18;
+
+      stroke-linecap: butt;
+
+      transition:
+        stroke-dashoffset 0.2s linear;
+
+    }
+
+
+    .center-image {
+
+      position: absolute !important;
+
+      top: 50% !important;
+
+      left: 50% !important;
+
+      width: 115px !important;
+
+      height: 115px !important;
+
+      transform:
+        translate(
+          -50%,
+          -50%
+        ) !important;
+
+      object-fit:
+        contain !important;
+
+      display:
+        block !important;
+
+      z-index: 2;
+
+
+      /*
+        Your current image is black.
+        This makes it cream/white.
+      */
+
+      filter:
+        brightness(0)
+        invert(1);
+
+    }
+
+
+    .time {
+
+      font-size:
+        clamp(
+          55px,
+          7vw,
+          92px
+        );
+
+      font-weight: 400;
+
+      line-height: 1;
+
+      margin-top: 25px;
+
+      letter-spacing: -2px;
+
+      font-variant-numeric:
+        tabular-nums;
+
+      white-space: nowrap;
+
+    }
+
+
+    .status {
+
+      margin-top: 15px;
+
+      font-size: 13px;
+
+      letter-spacing: 1px;
+
+      min-height: 18px;
+
+      opacity: 0.8;
+
+    }
+
+
+    .footer {
+
+      margin-top: 45px;
+
+      font-size: 11px;
+
+      letter-spacing: 5px;
+
+      opacity: 0.5;
+
+    }
+
+
+    @media (max-width: 850px) {
+
+      .timers {
+
+        grid-template-columns:
+          1fr;
+
+        gap: 70px;
+
+      }
+
+      .circle-wrapper {
+
+        width: 300px;
+
+        height: 300px;
+
+      }
+
+      .time {
+
+        font-size: 65px;
+
+      }
+
+    }
+
+
+    @media (max-width: 400px) {
+
+      .circle-wrapper {
+
+        width: 270px;
+
+        height: 270px;
+
+      }
+
+      .time {
+
+        font-size: 58px;
+
+      }
+
+      .center-image {
+
+        width: 100px !important;
+
+        height: 100px !important;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <main class="page">
+
+
+    <div class="title">
+      STUDY WITH ME
+    </div>
+
+
+    <div
+      id="currentPhase"
+      class="current-phase"
+    >
+      READY — FOCUS SESSION
+    </div>
+
+
+    <div class="timers">
+
+
+      <!-- ===================================================
+           FOCUS
+           =================================================== -->
+
+      <section
+        id="focusCard"
+        class="timer-card active"
+      >
+
+        <div class="timer-title">
+          FOCUS
+        </div>
+
+
+        <div class="circle-wrapper">
+
+          <svg
+            class="circle-svg"
+            viewBox="0 0 300 300"
+          >
+
+            <circle
+              class="circle-background"
+              cx="150"
+              cy="150"
+              r="124"
+            />
+
+
+            <circle
+              id="focusProgress"
+              class="circle-progress"
+              cx="150"
+              cy="150"
+              r="124"
+            />
+
+          </svg>
+
+
+          <img
+            class="center-image"
+            src="https://drive.google.com/thumbnail?id=1ErhNBxySNwsUv4gMHkfCl52niV3VJ3qe&sz=w500"
+            alt="Focus image"
+          >
+
+        </div>
+
+
+        <div
+          id="focusTime"
+          class="time"
+        >
+          50:00
+        </div>
+
+
+        <div
+          id="focusStatus"
+          class="status"
+        >
+          Ready to focus
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           BREAK
+           =================================================== -->
+
+      <section
+        id="breakCard"
+        class="timer-card"
+      >
+
+        <div class="timer-title">
+          BREAK
+        </div>
+
+
+        <div class="circle-wrapper">
+
+          <svg
+            class="circle-svg"
+            viewBox="0 0 300 300"
+          >
+
+            <circle
+              class="circle-background"
+              cx="150"
+              cy="150"
+              r="124"
+            />
+
+
+            <circle
+              id="breakProgress"
+              class="circle-progress"
+              cx="150"
+              cy="150"
+              r="124"
+            />
+
+          </svg>
+
+
+          <img
+            class="center-image"
+            src="https://drive.google.com/thumbnail?id=1ErhNBxySNwsUv4gMHkfCl52niV3VJ3qe&sz=w500"
+            alt="Break image"
+          >
+
+        </div>
+
+
+        <div
+          id="breakTime"
+          class="time"
+        >
+          10:00
+        </div>
+
+
+        <div
+          id="breakStatus"
+          class="status"
+        >
+          Ready for a break
+        </div>
+
+      </section>
+
+
+    </div>
+
+
+    <div class="footer">
+      FOCUS • REST • REPEAT
+    </div>
+
+  </main>
+
+
+
+  <script>
+
+
+    /* =========================================================
+       READ AUTOSTART FROM URL
+       ========================================================= */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const AUTO_START =
+      params.get("autostart") === "true";
+
+
+
+    /* =========================================================
+       TIMER DATA
+       ========================================================= */
+
+    const timers = {
+
+      focus: {
+
+        total:
+          50 * 60,
+
+        remaining:
+          50 * 60,
+
+        deadline:
+          null,
+
+        interval:
+          null,
+
+        running:
+          false
+
+      },
+
+
+      break: {
+
+        total:
+          10 * 60,
+
+        remaining:
+          10 * 60,
+
+        deadline:
+          null,
+
+        interval:
+          null,
+
+        running:
+          false
+
+      }
+
+    };
+
+
+    let activePhase =
+      "focus";
+
+
+    let transitionTimeout =
+      null;
+
+
+
+    /* =========================================================
+       CIRCLE SETTINGS
+       ========================================================= */
+
+    const radius =
+      124;
+
+
+    const circumference =
+      2 * Math.PI * radius;
+
+
+
+    function setupCircle(id) {
+
+      const circle =
+        document.getElementById(id);
+
+
+      circle.style.strokeDasharray =
+        circumference;
+
+
+      circle.style.strokeDashoffset =
+        0;
+
+
+      circle.style.transform =
+        "rotate(-90deg)";
+
+
+      circle.style.transformOrigin =
+        "50% 50%";
+
+    }
+
+
+    setupCircle(
+      "focusProgress"
+    );
+
+
+    setupCircle(
+      "breakProgress"
+    );
+
+
+
+    /* =========================================================
+       FORMAT TIME
+       ========================================================= */
+
+    function formatTime(
+      seconds
+    ) {
+
+      const minutes =
+        Math.floor(
+          seconds / 60
+        );
+
+
+      const secs =
+        seconds % 60;
+
+
+      return (
+
+        String(minutes)
+          .padStart(
+            2,
+            "0"
+          )
+
+        +
+
+        ":"
+
+        +
+
+        String(secs)
+          .padStart(
+            2,
+            "0"
+          )
+
+      );
+
+    }
+
+
+
+    /* =========================================================
+       PHASE DISPLAY
+       ========================================================= */
+
+    function updatePhaseDisplay() {
+
+      const phase =
+        document.getElementById(
+          "currentPhase"
+        );
+
+
+      const focusCard =
+        document.getElementById(
+          "focusCard"
+        );
+
+
+      const breakCard =
+        document.getElementById(
+          "breakCard"
+        );
+
+
+      if (
+        activePhase === "focus"
+      ) {
+
+        focusCard.className =
+          "timer-card active";
+
+
+        breakCard.className =
+          "timer-card";
+
+
+        phase.textContent =
+
+          timers.focus.running
+
+            ? "FOCUS SESSION — STAY FOCUSED"
+
+            : "READY — FOCUS SESSION";
+
+      }
+
+      else {
+
+        focusCard.className =
+          "timer-card";
+
+
+        breakCard.className =
+          "timer-card active";
+
+
+        phase.textContent =
+
+          timers.break.running
+
+            ? "BREAK — TAKE A REST"
+
+            : "READY — BREAK";
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       RENDER ONE TIMER
+       ========================================================= */
+
+    function renderTimer(
+      name
+    ) {
+
+      const timer =
+        timers[name];
+
+
+      const display =
+        document.getElementById(
+          name + "Time"
+        );
+
+
+      const progress =
+        document.getElementById(
+          name + "Progress"
+        );
+
+
+      display.textContent =
+        formatTime(
+          timer.remaining
+        );
+
+
+      const percentage =
+
+        timer.remaining /
+        timer.total;
+
+
+      const offset =
+
+        circumference *
+        (
+          1 -
+          percentage
+        );
+
+
+      progress.style.strokeDashoffset =
+        offset;
+
+    }
+
+
+
+    /* =========================================================
+       RENDER EVERYTHING
+       ========================================================= */
+
+    function renderAll() {
+
+      renderTimer(
+        "focus"
+      );
+
+
+      renderTimer(
+        "break"
+      );
+
+
+      updatePhaseDisplay();
+
+    }
+
+
+
+    /* =========================================================
+       STOP TIMER
+       ========================================================= */
+
+    function stopTimer(
+      name
+    ) {
+
+      const timer =
+        timers[name];
+
+
+      if (
+        timer.interval !== null
+      ) {
+
+        clearInterval(
+          timer.interval
+        );
+
+      }
+
+
+      timer.interval =
+        null;
+
+
+      timer.running =
+        false;
+
+
+      timer.deadline =
+        null;
+
+    }
+
+
+
+    /* =========================================================
+       CANCEL TRANSITION
+       ========================================================= */
+
+    function cancelTransition() {
+
+      if (
+        transitionTimeout !== null
+      ) {
+
+        clearTimeout(
+          transitionTimeout
+        );
+
+
+        transitionTimeout =
+          null;
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       START TIMER
+       ========================================================= */
+
+    function startTimer(
+      name
+    ) {
+
+      const timer =
+        timers[name];
+
+
+      if (
+        timer.running
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        timer.remaining <= 0
+      ) {
+
+        return;
+
+      }
+
+
+      const other =
+
+        name === "focus"
+          ? "break"
+          : "focus";
+
+
+      /*
+        Only one timer runs.
+      */
+
+      if (
+        timers[other].running
+      ) {
+
+        stopTimer(
+          other
+        );
+
+      }
+
+
+      activePhase =
+        name;
+
+
+      timer.running =
+        true;
+
+
+      /*
+        Exact finishing time.
+      */
+
+      timer.deadline =
+
+        Date.now()
+
+        +
+
+        (
+          timer.remaining *
+          1000
+        );
+
+
+      document.getElementById(
+        name + "Status"
+      ).textContent =
+
+        name === "focus"
+
+          ? "Stay focused"
+
+          : "Enjoy your break";
+
+
+      /*
+        Update 5 times per second
+        for a smooth ring.
+      */
+
+      timer.interval =
+
+        setInterval(
+
+          function() {
+
+            tick(name);
+
+          },
+
+          200
+
+        );
+
+
+      renderAll();
+
+    }
+
+
+
+    /* =========================================================
+       TIMER TICK
+       ========================================================= */
+
+    function tick(
+      name
+    ) {
+
+      const timer =
+        timers[name];
+
+
+      if (
+        !timer.running
+      ) {
+
+        return;
+
+      }
+
+
+      timer.remaining =
+
+        Math.max(
+
+          0,
+
+          Math.ceil(
+
+            (
+              timer.deadline
+              -
+              Date.now()
+
+            ) / 1000
+
+          )
+
+        );
+
+
+      if (
+        timer.remaining <= 0
+      ) {
+
+        completeTimer(
+          name
+        );
+
+        return;
+
+      }
+
+
+      renderAll();
+
+    }
+
+
+
+    /* =========================================================
+       COMPLETE TIMER
+       ========================================================= */
+
+    function completeTimer(
+      name
+    ) {
+
+      stopTimer(
+        name
+      );
+
+
+      timers[name].remaining =
+        0;
+
+
+      document.getElementById(
+        name + "Status"
+      ).textContent =
+
+        name === "focus"
+
+          ? "Focus session complete!"
+
+          : "Break complete!";
+
+
+      renderAll();
+
+
+      /*
+        Make a completion sound.
+      */
+
+      beep();
+
+
+      /*
+        Focus -> Break
+        Break -> Focus
+      */
+
+      const nextPhase =
+
+        name === "focus"
+
+          ? "break"
+
+          : "focus";
+
+
+      /*
+        Brief transition at 00:00.
+      */
+
+      transitionTimeout =
+
+        setTimeout(
+
+          function() {
+
+            transitionTimeout =
+              null;
+
+
+            /*
+              Reset next timer
+              to its full duration.
+            */
+
+            timers[nextPhase].remaining =
+
+              timers[nextPhase].total;
+
+
+            activePhase =
+              nextPhase;
+
+
+            startTimer(
+              nextPhase
+            );
+
+          },
+
+          900
+
+        );
+
+    }
+
+
+
+    /* =========================================================
+       COMPLETION SOUND
+       ========================================================= */
+
+    function beep() {
+
+      try {
+
+        const AudioContext =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+
+        if (
+          !AudioContext
+        ) {
+
+          return;
+
+        }
+
+
+        const audioContext =
+          new AudioContext();
+
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        const gain =
+          audioContext.createGain();
+
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        oscillator.type =
+          "sine";
+
+
+        oscillator.frequency.value =
+          700;
+
+
+        gain.gain.setValueAtTime(
+          0.001,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.25,
+          audioContext.currentTime +
+          0.02
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime +
+          0.8
+        );
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime +
+          0.8
+        );
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Completion sound unavailable."
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
+
+    renderAll();
+
+
+    /*
+      Start automatically when the
+      URL contains:
+
+      ?autostart=true
+    */
+
+    if (
+      AUTO_START
+    ) {
+
+      setTimeout(
+
+        function() {
+
+          startTimer(
+            "focus"
+          );
+
+        },
+
+        700
+
+      );
+
+    }
+
+  </script>
+
+</body>
+
+</html>
