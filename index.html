@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Study With Me</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: #613b3f;
+      color: #f8eee2;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      overflow: hidden;
+
+      opacity: 1;
+
+      transition:
+        opacity 0.4s ease;
+    }
+
+    body.fade-out {
+      opacity: 0;
+    }
+
+    .start-screen {
+      width: 100%;
+      max-width: 850px;
+
+      padding: 40px;
+
+      text-align: center;
+    }
+
+    .welcome {
+      font-size: 13px;
+
+      letter-spacing: 6px;
+
+      opacity: 0.6;
+
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-size:
+        clamp(
+          34px,
+          6vw,
+          64px
+        );
+
+      letter-spacing:
+        clamp(
+          5px,
+          1.2vw,
+          12px
+        );
+
+      font-weight: 500;
+
+      margin:
+        0 0 28px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+
+      letter-spacing: 3px;
+
+      opacity: 0.75;
+
+      margin-bottom: 52px;
+    }
+
+    .start-button {
+      display: inline-block;
+
+      text-decoration: none;
+
+      border:
+        2px solid #f8eee2;
+
+      background:
+        #f8eee2;
+
+      color:
+        #613b3f;
+
+      padding:
+        18px 65px;
+
+      border-radius: 7px;
+
+      font-size: 15px;
+
+      font-weight: bold;
+
+      letter-spacing: 4px;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s,
+        background 0.2s,
+        color 0.2s;
+    }
+
+    .start-button:hover {
+      background:
+        transparent;
+
+      color:
+        #f8eee2;
+
+      transform:
+        scale(1.04);
+    }
+
+    .start-button:active {
+      transform:
+        scale(0.98);
+    }
+
+    .session-info {
+      margin-top: 42px;
+
+      font-size: 11px;
+
+      letter-spacing: 3px;
+
+      opacity: 0.55;
+    }
+
+    @media (max-width: 600px) {
+
+      .start-screen {
+        padding: 25px;
+      }
+
+      .subtitle {
+        line-height: 1.8;
+      }
+
+      .start-button {
+        padding:
+          16px 45px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <main class="start-screen">
+
+    <div class="welcome">
+      WELCOME
+    </div>
+
+    <h1 class="title">
+      STUDY WITH ME
+    </h1>
+
+    <div class="subtitle">
+      FOCUS • REST • REPEAT
+    </div>
+
+
+    <!--
+      Clicking this stays in the SAME browser tab
+      and opens timer.html.
+
+      autostart=true tells timer.html to begin
+      the 50-minute Focus timer automatically.
+    -->
+
+    <a
+      class="start-button"
+      href="timer.html?autostart=true"
+      onclick="document.body.classList.add('fade-out');"
+    >
+      START
+    </a>
+
+
+    <div class="session-info">
+
+      50 MINUTES FOCUS
+      &nbsp; • &nbsp;
+      10 MINUTES BREAK
+
+    </div>
+
+  </main>
+
+
+</body>
+
+</html>
