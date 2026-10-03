@@ -15,24 +15,36 @@
 
   <style>
 
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
     * {
       box-sizing: border-box;
     }
 
+
     html,
     body {
+
       width: 100%;
+
       min-height: 100%;
+
       margin: 0;
+
     }
+
 
     body {
 
       min-height: 100vh;
 
-      background: #613b3f;
+      background:
+        #613b3f;
 
-      color: #f8eee2;
+      color:
+        #f8eee2;
 
       font-family:
         Arial,
@@ -55,6 +67,10 @@
     }
 
 
+    /* =========================================================
+       TIMER PAGE FADE IN
+       ========================================================= */
+
     @keyframes pageFadeIn {
 
       from {
@@ -67,6 +83,10 @@
 
     }
 
+
+    /* =========================================================
+       MAIN PAGE
+       ========================================================= */
 
     .page {
 
@@ -82,6 +102,10 @@
     }
 
 
+    /* =========================================================
+       TITLE
+       ========================================================= */
+
     .title {
 
       font-size: 18px;
@@ -94,6 +118,10 @@
 
     }
 
+
+    /* =========================================================
+       CURRENT PHASE
+       ========================================================= */
 
     .current-phase {
 
@@ -109,6 +137,10 @@
 
     }
 
+
+    /* =========================================================
+       TWO TIMER LAYOUT
+       ========================================================= */
 
     .timers {
 
@@ -129,6 +161,10 @@
 
     }
 
+
+    /* =========================================================
+       TIMER CARD
+       ========================================================= */
 
     .timer-card {
 
@@ -156,6 +192,10 @@
     }
 
 
+    /* =========================================================
+       TIMER TITLE
+       ========================================================= */
+
     .timer-title {
 
       font-size: 18px;
@@ -168,6 +208,10 @@
 
     }
 
+
+    /* =========================================================
+       CIRCLE WRAPPER
+       ========================================================= */
 
     .circle-wrapper {
 
@@ -182,6 +226,10 @@
     }
 
 
+    /* =========================================================
+       SVG
+       ========================================================= */
+
     .circle-svg {
 
       width: 100%;
@@ -195,11 +243,16 @@
     }
 
 
+    /* =========================================================
+       DOTTED BACKGROUND CIRCLE
+       ========================================================= */
+
     .circle-background {
 
       fill: none;
 
-      stroke: #f8eee2;
+      stroke:
+        #f8eee2;
 
       stroke-width: 4;
 
@@ -211,11 +264,16 @@
     }
 
 
+    /* =========================================================
+       SOLID COUNTDOWN RING
+       ========================================================= */
+
     .circle-progress {
 
       fill: none;
 
-      stroke: #f8eee2;
+      stroke:
+        #f8eee2;
 
       stroke-width: 18;
 
@@ -226,6 +284,10 @@
 
     }
 
+
+    /* =========================================================
+       FOCUS / WORK IMAGE
+       ========================================================= */
 
     .center-image {
 
@@ -253,18 +315,28 @@
 
       z-index: 2;
 
+    }
 
-      /*
-        Your current image is black.
-        This makes it cream/white.
-      */
 
-      filter:
-        brightness(0)
-        invert(1);
+    /* =========================================================
+       BREAK / MUG IMAGE
+       
+       Larger than the work image.
+       155px vs 115px.
+       ========================================================= */
+
+    .break-image {
+
+      width: 155px !important;
+
+      height: 155px !important;
 
     }
 
+
+    /* =========================================================
+       DIGITAL TIMER
+       ========================================================= */
 
     .time {
 
@@ -291,6 +363,10 @@
     }
 
 
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
     .status {
 
       margin-top: 15px;
@@ -306,6 +382,10 @@
     }
 
 
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
     .footer {
 
       margin-top: 45px;
@@ -319,6 +399,10 @@
     }
 
 
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
     @media (max-width: 850px) {
 
       .timers {
@@ -330,6 +414,7 @@
 
       }
 
+
       .circle-wrapper {
 
         width: 300px;
@@ -337,6 +422,7 @@
         height: 300px;
 
       }
+
 
       .time {
 
@@ -346,6 +432,10 @@
 
     }
 
+
+    /* =========================================================
+       SMALL MOBILE
+       ========================================================= */
 
     @media (max-width: 400px) {
 
@@ -357,17 +447,33 @@
 
       }
 
+
       .time {
 
         font-size: 58px;
 
       }
 
+
       .center-image {
 
         width: 100px !important;
 
         height: 100px !important;
+
+      }
+
+
+      /*
+        Keep the break image larger
+        on small screens too.
+      */
+
+      .break-image {
+
+        width: 135px !important;
+
+        height: 135px !important;
 
       }
 
@@ -384,10 +490,18 @@
   <main class="page">
 
 
+    <!-- =====================================================
+         TITLE
+         ===================================================== -->
+
     <div class="title">
       STUDY WITH ME
     </div>
 
+
+    <!-- =====================================================
+         CURRENT PHASE
+         ===================================================== -->
 
     <div
       id="currentPhase"
@@ -397,11 +511,15 @@
     </div>
 
 
+    <!-- =====================================================
+         BOTH TIMERS
+         ===================================================== -->
+
     <div class="timers">
 
 
       <!-- ===================================================
-           FOCUS
+           FOCUS TIMER
            =================================================== -->
 
       <section
@@ -414,12 +532,20 @@
         </div>
 
 
-        <div class="circle-wrapper">
+        <!-- ================= CIRCLE ================= -->
+
+        <div
+          class="circle-wrapper"
+        >
+
 
           <svg
             class="circle-svg"
             viewBox="0 0 300 300"
           >
+
+
+            <!-- dotted background -->
 
             <circle
               class="circle-background"
@@ -429,6 +555,8 @@
             />
 
 
+            <!-- animated progress ring -->
+
             <circle
               id="focusProgress"
               class="circle-progress"
@@ -437,17 +565,23 @@
               r="124"
             />
 
+
           </svg>
 
 
+          <!-- WORK / STUDY IMAGE -->
+
           <img
             class="center-image"
-            src="Study-Image.png"
+            src="./study-image.png"
             alt="Focus image"
           >
 
+
         </div>
 
+
+        <!-- ================= DIGITAL TIME ================= -->
 
         <div
           id="focusTime"
@@ -457,6 +591,8 @@
         </div>
 
 
+        <!-- ================= STATUS ================= -->
+
         <div
           id="focusStatus"
           class="status"
@@ -464,12 +600,13 @@
           Ready to focus
         </div>
 
+
       </section>
 
 
 
       <!-- ===================================================
-           BREAK
+           BREAK TIMER
            =================================================== -->
 
       <section
@@ -482,12 +619,20 @@
         </div>
 
 
-        <div class="circle-wrapper">
+        <!-- ================= CIRCLE ================= -->
+
+        <div
+          class="circle-wrapper"
+        >
+
 
           <svg
             class="circle-svg"
             viewBox="0 0 300 300"
           >
+
+
+            <!-- dotted background -->
 
             <circle
               class="circle-background"
@@ -497,6 +642,8 @@
             />
 
 
+            <!-- animated progress ring -->
+
             <circle
               id="breakProgress"
               class="circle-progress"
@@ -505,17 +652,23 @@
               r="124"
             />
 
+
           </svg>
 
 
+          <!-- BREAK / MUG IMAGE -->
+
           <img
-            class="center-image"
-            src="Coffee-Mug.jpg"
+            class="center-image break-image"
+            src="./break-image.png"
             alt="Break image"
           >
 
+
         </div>
 
+
+        <!-- ================= DIGITAL TIME ================= -->
 
         <div
           id="breakTime"
@@ -525,6 +678,8 @@
         </div>
 
 
+        <!-- ================= STATUS ================= -->
+
         <div
           id="breakStatus"
           class="status"
@@ -532,15 +687,21 @@
           Ready for a break
         </div>
 
+
       </section>
 
 
     </div>
 
 
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
     <div class="footer">
       FOCUS • REST • REPEAT
     </div>
+
 
   </main>
 
@@ -550,13 +711,14 @@
 
 
     /* =========================================================
-       READ AUTOSTART FROM URL
+       READ AUTOSTART
        ========================================================= */
 
     const params =
       new URLSearchParams(
         window.location.search
       );
+
 
     const AUTO_START =
       params.get("autostart") === "true";
@@ -611,9 +773,19 @@
     };
 
 
+    /*
+      Current Pomodoro phase.
+
+      Focus → Break → Focus → Break...
+    */
+
     let activePhase =
       "focus";
 
+
+    /*
+      Short delay between phases.
+    */
 
     let transitionTimeout =
       null;
@@ -621,7 +793,7 @@
 
 
     /* =========================================================
-       CIRCLE SETTINGS
+       CIRCLE CONFIGURATION
        ========================================================= */
 
     const radius =
@@ -633,10 +805,14 @@
 
 
 
-    function setupCircle(id) {
+    function setupCircle(
+      id
+    ) {
 
       const circle =
-        document.getElementById(id);
+        document.getElementById(
+          id
+        );
 
 
       circle.style.strokeDasharray =
@@ -646,6 +822,10 @@
       circle.style.strokeDashoffset =
         0;
 
+
+      /*
+        Start the ring at 12 o'clock.
+      */
 
       circle.style.transform =
         "rotate(-90deg)";
@@ -713,7 +893,7 @@
 
 
     /* =========================================================
-       PHASE DISPLAY
+       UPDATE ACTIVE PHASE DISPLAY
        ========================================================= */
 
     function updatePhaseDisplay() {
@@ -740,6 +920,7 @@
         activePhase === "focus"
       ) {
 
+
         focusCard.className =
           "timer-card active";
 
@@ -748,17 +929,27 @@
           "timer-card";
 
 
-        phase.textContent =
-
+        if (
           timers.focus.running
+        ) {
 
-            ? "FOCUS SESSION — STAY FOCUSED"
+          phase.textContent =
+            "FOCUS SESSION — STAY FOCUSED";
 
-            : "READY — FOCUS SESSION";
+        }
+
+        else {
+
+          phase.textContent =
+            "READY — FOCUS SESSION";
+
+        }
 
       }
 
+
       else {
+
 
         focusCard.className =
           "timer-card";
@@ -768,13 +959,21 @@
           "timer-card active";
 
 
-        phase.textContent =
-
+        if (
           timers.break.running
+        ) {
 
-            ? "BREAK — TAKE A REST"
+          phase.textContent =
+            "BREAK — TAKE A REST";
 
-            : "READY — BREAK";
+        }
+
+        else {
+
+          phase.textContent =
+            "READY — BREAK";
+
+        }
 
       }
 
@@ -783,7 +982,7 @@
 
 
     /* =========================================================
-       RENDER ONE TIMER
+       RENDER TIMER
        ========================================================= */
 
     function renderTimer(
@@ -806,17 +1005,30 @@
         );
 
 
+      /*
+        Update digital time.
+      */
+
       display.textContent =
         formatTime(
           timer.remaining
         );
 
 
+      /*
+        Determine how much time is left.
+      */
+
       const percentage =
 
         timer.remaining /
         timer.total;
 
+
+      /*
+        Convert remaining percentage
+        to SVG stroke offset.
+      */
 
       const offset =
 
@@ -930,6 +1142,10 @@
         timers[name];
 
 
+      /*
+        Don't start an already running timer.
+      */
+
       if (
         timer.running
       ) {
@@ -938,6 +1154,10 @@
 
       }
 
+
+      /*
+        Don't start a timer with no time.
+      */
 
       if (
         timer.remaining <= 0
@@ -948,16 +1168,18 @@
       }
 
 
+      /*
+        Only one phase runs at a time.
+      */
+
       const other =
 
         name === "focus"
+
           ? "break"
+
           : "focus";
 
-
-      /*
-        Only one timer runs.
-      */
 
       if (
         timers[other].running
@@ -979,7 +1201,7 @@
 
 
       /*
-        Exact finishing time.
+        Calculate exact deadline.
       */
 
       timer.deadline =
@@ -994,6 +1216,10 @@
         );
 
 
+      /*
+        Status.
+      */
+
       document.getElementById(
         name + "Status"
       ).textContent =
@@ -1006,8 +1232,7 @@
 
 
       /*
-        Update 5 times per second
-        for a smooth ring.
+        Update every 200ms.
       */
 
       timer.interval =
@@ -1052,6 +1277,10 @@
       }
 
 
+      /*
+        Use actual clock time.
+      */
+
       timer.remaining =
 
         Math.max(
@@ -1071,6 +1300,10 @@
 
         );
 
+
+      /*
+        Timer reached zero.
+      */
 
       if (
         timer.remaining <= 0
@@ -1099,14 +1332,26 @@
       name
     ) {
 
+      /*
+        Stop current timer.
+      */
+
       stopTimer(
         name
       );
 
 
+      /*
+        Force exact 00:00 display.
+      */
+
       timers[name].remaining =
         0;
 
+
+      /*
+        Status message.
+      */
 
       document.getElementById(
         name + "Status"
@@ -1123,15 +1368,14 @@
 
 
       /*
-        Make a completion sound.
+        Completion sound.
       */
 
       beep();
 
 
       /*
-        Focus -> Break
-        Break -> Focus
+        Determine the next phase.
       */
 
       const nextPhase =
@@ -1144,7 +1388,8 @@
 
 
       /*
-        Brief transition at 00:00.
+        Keep completed timer visible
+        for a fraction of a second.
       */
 
       transitionTimeout =
@@ -1158,8 +1403,7 @@
 
 
             /*
-              Reset next timer
-              to its full duration.
+              Reset next timer to full duration.
             */
 
             timers[nextPhase].remaining =
@@ -1167,9 +1411,17 @@
               timers[nextPhase].total;
 
 
+            /*
+              Switch active phase.
+            */
+
             activePhase =
               nextPhase;
 
+
+            /*
+              Automatically begin next phase.
+            */
 
             startTimer(
               nextPhase
@@ -1237,23 +1489,40 @@
           700;
 
 
+        /*
+          Fade in.
+        */
+
         gain.gain.setValueAtTime(
+
           0.001,
+
           audioContext.currentTime
+
         );
 
 
         gain.gain.exponentialRampToValueAtTime(
+
           0.25,
-          audioContext.currentTime +
-          0.02
+
+          audioContext.currentTime
+          + 0.02
+
         );
 
 
+        /*
+          Fade out.
+        */
+
         gain.gain.exponentialRampToValueAtTime(
+
           0.001,
-          audioContext.currentTime +
-          0.8
+
+          audioContext.currentTime
+          + 0.8
+
         );
 
 
@@ -1261,13 +1530,17 @@
 
 
         oscillator.stop(
-          audioContext.currentTime +
-          0.8
+
+          audioContext.currentTime
+          + 0.8
+
         );
 
       }
 
-      catch (error) {
+      catch (
+        error
+      ) {
 
         console.log(
           "Completion sound unavailable."
@@ -1287,10 +1560,11 @@
 
 
     /*
-      Start automatically when the
-      URL contains:
+      When index.html sends:
 
-      ?autostart=true
+      timer.html?autostart=true
+
+      automatically start Focus.
     */
 
     if (
