@@ -68,7 +68,7 @@
 
 
     /* =========================================================
-       PAGE FADE IN
+       TIMER PAGE FADE IN
        ========================================================= */
 
     @keyframes pageFadeIn {
@@ -85,7 +85,7 @@
 
 
     /* =========================================================
-       PAGE
+       MAIN PAGE
        ========================================================= */
 
     .page {
@@ -139,7 +139,7 @@
 
 
     /* =========================================================
-       TWO TIMER LAYOUT
+       TIMER LAYOUT
        ========================================================= */
 
     .timers {
@@ -265,7 +265,7 @@
 
 
     /* =========================================================
-       SOLID COUNTDOWN RING
+       COUNTDOWN RING
        ========================================================= */
 
     .circle-progress {
@@ -315,6 +315,20 @@
 
       z-index: 2;
 
+
+      /*
+        Your PNG artwork is black.
+
+        This turns the black artwork
+        into white/cream.
+
+        Transparent areas stay transparent.
+      */
+
+      filter:
+        brightness(0)
+        invert(1);
+
     }
 
 
@@ -322,6 +336,9 @@
        BREAK / MUG IMAGE
        
        Slightly larger than the work image.
+       
+       Work image = 115px
+       Mug        = 130px
        ========================================================= */
 
     .break-image {
@@ -460,6 +477,10 @@
       }
 
 
+      /*
+        Smaller work image on tiny screens.
+      */
+
       .center-image {
 
         width: 100px !important;
@@ -469,11 +490,22 @@
       }
 
 
+      /*
+        Keep the mug just a little larger
+        than the work image.
+      */
+
       .break-image {
 
         width: 115px !important;
 
         height: 115px !important;
+
+        transform:
+          translate(
+            -50%,
+            -50%
+          ) !important;
 
       }
 
@@ -485,6 +517,7 @@
 
 
 <body>
+
 
   <main class="page">
 
@@ -531,16 +564,18 @@
         </div>
 
 
-        <!-- ================= CIRCLE ================= -->
+        <!-- =================================================
+             FOCUS CIRCLE
+             ================================================= -->
 
-        <div class="circle-wrapper">
-
+        <div
+          class="circle-wrapper"
+        >
 
           <svg
             class="circle-svg"
             viewBox="0 0 300 300"
           >
-
 
             <!-- dotted background -->
 
@@ -552,7 +587,7 @@
             />
 
 
-            <!-- animated progress ring -->
+            <!-- animated countdown ring -->
 
             <circle
               id="focusProgress"
@@ -562,11 +597,10 @@
               r="124"
             />
 
-
           </svg>
 
 
-          <!-- WORK / STUDY IMAGE -->
+          <!-- Focus image -->
 
           <img
             class="center-image"
@@ -574,11 +608,10 @@
             alt="Focus image"
           >
 
-
         </div>
 
 
-        <!-- ================= DIGITAL TIME ================= -->
+        <!-- Focus digital timer -->
 
         <div
           id="focusTime"
@@ -588,7 +621,7 @@
         </div>
 
 
-        <!-- ================= STATUS ================= -->
+        <!-- Focus status -->
 
         <div
           id="focusStatus"
@@ -616,16 +649,18 @@
         </div>
 
 
-        <!-- ================= CIRCLE ================= -->
+        <!-- =================================================
+             BREAK CIRCLE
+             ================================================= -->
 
-        <div class="circle-wrapper">
-
+        <div
+          class="circle-wrapper"
+        >
 
           <svg
             class="circle-svg"
             viewBox="0 0 300 300"
           >
-
 
             <!-- dotted background -->
 
@@ -637,7 +672,7 @@
             />
 
 
-            <!-- animated progress ring -->
+            <!-- animated countdown ring -->
 
             <circle
               id="breakProgress"
@@ -647,11 +682,10 @@
               r="124"
             />
 
-
           </svg>
 
 
-          <!-- BREAK / MUG IMAGE -->
+          <!-- Break / mug image -->
 
           <img
             class="center-image break-image"
@@ -659,11 +693,10 @@
             alt="Break image"
           >
 
-
         </div>
 
 
-        <!-- ================= DIGITAL TIME ================= -->
+        <!-- Break digital timer -->
 
         <div
           id="breakTime"
@@ -673,7 +706,7 @@
         </div>
 
 
-        <!-- ================= STATUS ================= -->
+        <!-- Break status -->
 
         <div
           id="breakStatus"
@@ -703,7 +736,6 @@
 
 
   <script>
-
 
     /* =========================================================
        READ AUTOSTART
@@ -775,6 +807,10 @@
     let activePhase =
       "focus";
 
+
+    /*
+      Short transition between phases.
+    */
 
     let transitionTimeout =
       null;
@@ -917,13 +953,21 @@
           "timer-card";
 
 
-        phase.textContent =
-
+        if (
           timers.focus.running
+        ) {
 
-            ? "FOCUS SESSION — STAY FOCUSED"
+          phase.textContent =
+            "FOCUS SESSION — STAY FOCUSED";
 
-            : "READY — FOCUS SESSION";
+        }
+
+        else {
+
+          phase.textContent =
+            "READY — FOCUS SESSION";
+
+        }
 
       }
 
@@ -938,13 +982,21 @@
           "timer-card active";
 
 
-        phase.textContent =
-
+        if (
           timers.break.running
+        ) {
 
-            ? "BREAK — TAKE A REST"
+          phase.textContent =
+            "BREAK — TAKE A REST";
 
-            : "READY — BREAK";
+        }
+
+        else {
+
+          phase.textContent =
+            "READY — BREAK";
+
+        }
 
       }
 
@@ -977,7 +1029,7 @@
 
 
       /*
-        Update digital timer.
+        Update digital time.
       */
 
       display.textContent =
@@ -998,7 +1050,7 @@
 
       /*
         Convert percentage into
-        SVG circle offset.
+        SVG stroke offset.
       */
 
       const offset =
@@ -1114,7 +1166,7 @@
 
 
       /*
-        Don't start an already running timer.
+        Don't start an already-running timer.
       */
 
       if (
@@ -1127,7 +1179,7 @@
 
 
       /*
-        Don't start at zero.
+        Don't start if timer is at 0.
       */
 
       if (
@@ -1140,7 +1192,7 @@
 
 
       /*
-        Determine the other timer.
+        Determine the other phase.
       */
 
       const other =
@@ -1167,16 +1219,24 @@
       }
 
 
+      /*
+        Set active phase.
+      */
+
       activePhase =
         name;
 
+
+      /*
+        Mark timer as running.
+      */
 
       timer.running =
         true;
 
 
       /*
-        Calculate the exact finish time.
+        Calculate exact deadline.
       */
 
       timer.deadline =
@@ -1192,7 +1252,7 @@
 
 
       /*
-        Status.
+        Update status.
       */
 
       document.getElementById(
@@ -1255,8 +1315,7 @@
 
 
       /*
-        Use actual clock time so the timer
-        doesn't drift.
+        Use the real clock for accuracy.
       */
 
       timer.remaining =
@@ -1280,7 +1339,7 @@
 
 
       /*
-        Timer reached zero.
+        Timer finished.
       */
 
       if (
@@ -1310,17 +1369,13 @@
       name
     ) {
 
-      /*
-        Stop current timer.
-      */
-
       stopTimer(
         name
       );
 
 
       /*
-        Show exact 00:00.
+        Display exact 00:00.
       */
 
       timers[name].remaining =
@@ -1328,7 +1383,7 @@
 
 
       /*
-        Status message.
+        Completion status.
       */
 
       document.getElementById(
@@ -1346,7 +1401,7 @@
 
 
       /*
-        Completion sound.
+        Play completion sound.
       */
 
       beep();
@@ -1380,8 +1435,7 @@
 
 
             /*
-              Restore next timer
-              to full duration.
+              Reset next timer.
             */
 
             timers[nextPhase].remaining =
@@ -1389,12 +1443,16 @@
               timers[nextPhase].total;
 
 
+            /*
+              Switch active phase.
+            */
+
             activePhase =
               nextPhase;
 
 
             /*
-              Automatically start it.
+              Automatically start next timer.
             */
 
             startTimer(
@@ -1476,8 +1534,8 @@
 
           0.25,
 
-          audioContext.currentTime
-          + 0.02
+          audioContext.currentTime +
+          0.02
 
         );
 
@@ -1486,8 +1544,8 @@
 
           0.001,
 
-          audioContext.currentTime
-          + 0.8
+          audioContext.currentTime +
+          0.8
 
         );
 
@@ -1497,8 +1555,8 @@
 
         oscillator.stop(
 
-          audioContext.currentTime
-          + 0.8
+          audioContext.currentTime +
+          0.8
 
         );
 
@@ -1526,7 +1584,7 @@
 
 
     /*
-      The Start screen opens:
+      index.html sends:
 
       timer.html?autostart=true
 
