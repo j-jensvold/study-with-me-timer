@@ -68,7 +68,7 @@
 
 
     /* =========================================================
-       TIMER PAGE FADE IN
+       PAGE FADE IN
        ========================================================= */
 
     @keyframes pageFadeIn {
@@ -139,7 +139,7 @@
 
 
     /* =========================================================
-       TIMER LAYOUT
+       TWO TIMER LAYOUT
        ========================================================= */
 
     .timers {
@@ -265,7 +265,7 @@
 
 
     /* =========================================================
-       COUNTDOWN RING
+       SOLID COUNTDOWN RING
        ========================================================= */
 
     .circle-progress {
@@ -286,7 +286,7 @@
 
 
     /* =========================================================
-       FOCUS / WORK IMAGE
+       WORK / STUDY IMAGE
        ========================================================= */
 
     .center-image {
@@ -317,12 +317,9 @@
 
 
       /*
-        Your PNG artwork is black.
+        Turn black artwork white.
 
-        This turns the black artwork
-        into white/cream.
-
-        Transparent areas stay transparent.
+        Transparent areas remain transparent.
       */
 
       filter:
@@ -336,9 +333,6 @@
        BREAK / MUG IMAGE
        
        Slightly larger than the work image.
-       
-       Work image = 115px
-       Mug        = 130px
        ========================================================= */
 
     .break-image {
@@ -477,10 +471,6 @@
       }
 
 
-      /*
-        Smaller work image on tiny screens.
-      */
-
       .center-image {
 
         width: 100px !important;
@@ -491,7 +481,7 @@
 
 
       /*
-        Keep the mug just a little larger
+        Mug remains slightly larger
         than the work image.
       */
 
@@ -564,10 +554,6 @@
         </div>
 
 
-        <!-- =================================================
-             FOCUS CIRCLE
-             ================================================= -->
-
         <div
           class="circle-wrapper"
         >
@@ -587,7 +573,7 @@
             />
 
 
-            <!-- animated countdown ring -->
+            <!-- animated countdown -->
 
             <circle
               id="focusProgress"
@@ -600,7 +586,7 @@
           </svg>
 
 
-          <!-- Focus image -->
+          <!-- WORK / STUDY IMAGE -->
 
           <img
             class="center-image"
@@ -611,8 +597,6 @@
         </div>
 
 
-        <!-- Focus digital timer -->
-
         <div
           id="focusTime"
           class="time"
@@ -620,8 +604,6 @@
           50:00
         </div>
 
-
-        <!-- Focus status -->
 
         <div
           id="focusStatus"
@@ -649,10 +631,6 @@
         </div>
 
 
-        <!-- =================================================
-             BREAK CIRCLE
-             ================================================= -->
-
         <div
           class="circle-wrapper"
         >
@@ -672,7 +650,7 @@
             />
 
 
-            <!-- animated countdown ring -->
+            <!-- animated countdown -->
 
             <circle
               id="breakProgress"
@@ -685,7 +663,7 @@
           </svg>
 
 
-          <!-- Break / mug image -->
+          <!-- BREAK / MUG IMAGE -->
 
           <img
             class="center-image break-image"
@@ -696,8 +674,6 @@
         </div>
 
 
-        <!-- Break digital timer -->
-
         <div
           id="breakTime"
           class="time"
@@ -705,8 +681,6 @@
           10:00
         </div>
 
-
-        <!-- Break status -->
 
         <div
           id="breakStatus"
@@ -722,10 +696,6 @@
     </div>
 
 
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
     <div class="footer">
       FOCUS • REST • REPEAT
     </div>
@@ -736,6 +706,7 @@
 
 
   <script>
+
 
     /* =========================================================
        READ AUTOSTART
@@ -773,7 +744,15 @@
           null,
 
         running:
-          false
+          false,
+
+        /*
+          Keeps track of which countdown
+          second has already made a sound.
+        */
+
+        lastWarningSecond:
+          null
 
       },
 
@@ -793,7 +772,10 @@
           null,
 
         running:
-          false
+          false,
+
+        lastWarningSecond:
+          null
 
       }
 
@@ -801,6 +783,8 @@
 
 
     /*
+      Current Pomodoro phase:
+
       Focus → Break → Focus → Break...
     */
 
@@ -835,9 +819,7 @@
     ) {
 
       const circle =
-        document.getElementById(
-          id
-        );
+        document.getElementById(id);
 
 
       circle.style.strokeDasharray =
@@ -918,7 +900,7 @@
 
 
     /* =========================================================
-       UPDATE ACTIVE PHASE
+       ACTIVE PHASE DISPLAY
        ========================================================= */
 
     function updatePhaseDisplay() {
@@ -1029,7 +1011,7 @@
 
 
       /*
-        Update digital time.
+        Digital time.
       */
 
       display.textContent =
@@ -1039,7 +1021,7 @@
 
 
       /*
-        Determine percentage remaining.
+        Calculate percentage remaining.
       */
 
       const percentage =
@@ -1154,6 +1136,237 @@
 
 
     /* =========================================================
+       SHORT COUNTDOWN BEEP
+       ========================================================= */
+
+    function countdownBeep() {
+
+      try {
+
+        const AudioContext =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+
+        if (
+          !AudioContext
+        ) {
+
+          return;
+
+        }
+
+
+        const audioContext =
+          new AudioContext();
+
+
+        /*
+          A browser may create the audio
+          context in a suspended state.
+        */
+
+        if (
+          audioContext.state ===
+          "suspended"
+        ) {
+
+          audioContext.resume();
+
+        }
+
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        const gain =
+          audioContext.createGain();
+
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        /*
+          Short warning tone.
+        */
+
+        oscillator.type =
+          "sine";
+
+
+        oscillator.frequency.value =
+          900;
+
+
+        /*
+          Small volume envelope.
+        */
+
+        gain.gain.setValueAtTime(
+          0.001,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.12,
+          audioContext.currentTime
+          + 0.01
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime
+          + 0.18
+        );
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime
+          + 0.18
+        );
+
+      }
+
+
+      catch (
+        error
+      ) {
+
+        console.log(
+          "Countdown sound unavailable."
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
+       COMPLETION BEEP
+       ========================================================= */
+
+    function completionBeep() {
+
+      try {
+
+        const AudioContext =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+
+        if (
+          !AudioContext
+        ) {
+
+          return;
+
+        }
+
+
+        const audioContext =
+          new AudioContext();
+
+
+        if (
+          audioContext.state ===
+          "suspended"
+        ) {
+
+          audioContext.resume();
+
+        }
+
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        const gain =
+          audioContext.createGain();
+
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        oscillator.type =
+          "sine";
+
+
+        oscillator.frequency.value =
+          700;
+
+
+        /*
+          Longer completion tone.
+        */
+
+        gain.gain.setValueAtTime(
+          0.001,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.25,
+          audioContext.currentTime
+          + 0.02
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime
+          + 0.8
+        );
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime
+          + 0.8
+        );
+
+      }
+
+
+      catch (
+        error
+      ) {
+
+        console.log(
+          "Completion sound unavailable."
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================================
        START TIMER
        ========================================================= */
 
@@ -1166,7 +1379,7 @@
 
 
       /*
-        Don't start an already-running timer.
+        Don't start an already running timer.
       */
 
       if (
@@ -1179,7 +1392,7 @@
 
 
       /*
-        Don't start if timer is at 0.
+        Don't start if timer is at zero.
       */
 
       if (
@@ -1192,7 +1405,7 @@
 
 
       /*
-        Determine the other phase.
+        Determine opposite phase.
       */
 
       const other =
@@ -1205,7 +1418,7 @@
 
 
       /*
-        Only one timer runs at once.
+        Only one timer can run.
       */
 
       if (
@@ -1233,6 +1446,18 @@
 
       timer.running =
         true;
+
+
+      /*
+        Reset the warning sound tracker.
+
+        This allows the timer to beep again
+        when it reaches 5 seconds on its
+        next cycle.
+      */
+
+      timer.lastWarningSecond =
+        null;
 
 
       /*
@@ -1267,7 +1492,7 @@
 
 
       /*
-        Update every 200ms.
+        Check the timer every 200ms.
       */
 
       timer.interval =
@@ -1315,7 +1540,8 @@
 
 
       /*
-        Use the real clock for accuracy.
+        Calculate accurate remaining
+        time from the actual clock.
       */
 
       timer.remaining =
@@ -1339,7 +1565,43 @@
 
 
       /*
-        Timer finished.
+        ========================================================
+        LAST 5 SECOND WARNING
+        ========================================================
+
+        Play exactly one beep at:
+
+        5
+        4
+        3
+        2
+        1
+      */
+
+      if (
+
+        timer.remaining >= 1 &&
+
+        timer.remaining <= 5 &&
+
+        timer.remaining !==
+          timer.lastWarningSecond
+
+      ) {
+
+        timer.lastWarningSecond =
+          timer.remaining;
+
+
+        countdownBeep();
+
+      }
+
+
+      /*
+        ========================================================
+        TIMER COMPLETE
+        ========================================================
       */
 
       if (
@@ -1369,13 +1631,17 @@
       name
     ) {
 
+      /*
+        Stop current timer.
+      */
+
       stopTimer(
         name
       );
 
 
       /*
-        Display exact 00:00.
+        Make display exactly 00:00.
       */
 
       timers[name].remaining =
@@ -1383,7 +1649,7 @@
 
 
       /*
-        Completion status.
+        Update completion message.
       */
 
       document.getElementById(
@@ -1401,10 +1667,10 @@
 
 
       /*
-        Play completion sound.
+        Longer completion sound.
       */
 
-      beep();
+      completionBeep();
 
 
       /*
@@ -1421,7 +1687,7 @@
 
 
       /*
-        Brief transition.
+        Brief pause at 00:00.
       */
 
       transitionTimeout =
@@ -1444,7 +1710,7 @@
 
 
             /*
-              Switch active phase.
+              Switch phase.
             */
 
             activePhase =
@@ -1452,7 +1718,7 @@
 
 
             /*
-              Automatically start next timer.
+              Automatically start it.
             */
 
             startTimer(
@@ -1470,113 +1736,6 @@
 
 
     /* =========================================================
-       COMPLETION SOUND
-       ========================================================= */
-
-    function beep() {
-
-      try {
-
-        const AudioContext =
-          window.AudioContext ||
-          window.webkitAudioContext;
-
-
-        if (
-          !AudioContext
-        ) {
-
-          return;
-
-        }
-
-
-        const audioContext =
-          new AudioContext();
-
-
-        const oscillator =
-          audioContext.createOscillator();
-
-
-        const gain =
-          audioContext.createGain();
-
-
-        oscillator.connect(
-          gain
-        );
-
-
-        gain.connect(
-          audioContext.destination
-        );
-
-
-        oscillator.type =
-          "sine";
-
-
-        oscillator.frequency.value =
-          700;
-
-
-        gain.gain.setValueAtTime(
-
-          0.001,
-
-          audioContext.currentTime
-
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-
-          0.25,
-
-          audioContext.currentTime +
-          0.02
-
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-
-          0.001,
-
-          audioContext.currentTime +
-          0.8
-
-        );
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-
-          audioContext.currentTime +
-          0.8
-
-        );
-
-      }
-
-      catch (
-        error
-      ) {
-
-        console.log(
-          "Completion sound unavailable."
-        );
-
-      }
-
-    }
-
-
-
-    /* =========================================================
        INITIALIZE
        ========================================================= */
 
@@ -1584,11 +1743,10 @@
 
 
     /*
-      index.html sends:
+      Start the Focus timer automatically
+      when the Start screen sends:
 
       timer.html?autostart=true
-
-      so Focus starts automatically.
     */
 
     if (
