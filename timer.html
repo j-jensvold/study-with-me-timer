@@ -68,7 +68,7 @@
 
 
     /* =========================================================
-       TIMER PAGE FADE IN
+       PAGE FADE IN
        ========================================================= */
 
     @keyframes pageFadeIn {
@@ -85,7 +85,7 @@
 
 
     /* =========================================================
-       MAIN PAGE
+       PAGE
        ========================================================= */
 
     .page {
@@ -321,14 +321,22 @@
     /* =========================================================
        BREAK / MUG IMAGE
        
-       Larger than the work image.
-       155px vs 115px.
+       Slightly larger than the work image.
        ========================================================= */
 
-  .break-image {
-  width: 300px !important;
-  height: 300px !important;
-}
+    .break-image {
+
+      width: 130px !important;
+
+      height: 130px !important;
+
+      transform:
+        translate(
+          -50%,
+          -50%
+        ) !important;
+
+    }
 
 
     /* =========================================================
@@ -461,16 +469,11 @@
       }
 
 
-      /*
-        Keep the break image larger
-        on small screens too.
-      */
-
       .break-image {
 
-        width: 135px !important;
+        width: 115px !important;
 
-        height: 135px !important;
+        height: 115px !important;
 
       }
 
@@ -482,7 +485,6 @@
 
 
 <body>
-
 
   <main class="page">
 
@@ -531,9 +533,7 @@
 
         <!-- ================= CIRCLE ================= -->
 
-        <div
-          class="circle-wrapper"
-        >
+        <div class="circle-wrapper">
 
 
           <svg
@@ -570,7 +570,7 @@
 
           <img
             class="center-image"
-            src="./Study-Image.png"
+            src="https://raw.githubusercontent.com/j-jensvold/study-with-me-timer/main/Study-Image.png"
             alt="Focus image"
           >
 
@@ -618,9 +618,7 @@
 
         <!-- ================= CIRCLE ================= -->
 
-        <div
-          class="circle-wrapper"
-        >
+        <div class="circle-wrapper">
 
 
           <svg
@@ -657,7 +655,7 @@
 
           <img
             class="center-image break-image"
-            src="./Coffee-Mug.jpg"
+            src="https://raw.githubusercontent.com/j-jensvold/study-with-me-timer/main/Coffee-Mug.jpg"
             alt="Break image"
           >
 
@@ -771,18 +769,12 @@
 
 
     /*
-      Current Pomodoro phase.
-
       Focus → Break → Focus → Break...
     */
 
     let activePhase =
       "focus";
 
-
-    /*
-      Short delay between phases.
-    */
 
     let transitionTimeout =
       null;
@@ -821,7 +813,7 @@
 
 
       /*
-        Start the ring at 12 o'clock.
+        Start at 12 o'clock.
       */
 
       circle.style.transform =
@@ -890,7 +882,7 @@
 
 
     /* =========================================================
-       UPDATE ACTIVE PHASE DISPLAY
+       UPDATE ACTIVE PHASE
        ========================================================= */
 
     function updatePhaseDisplay() {
@@ -917,7 +909,6 @@
         activePhase === "focus"
       ) {
 
-
         focusCard.className =
           "timer-card active";
 
@@ -926,28 +917,19 @@
           "timer-card";
 
 
-        if (
+        phase.textContent =
+
           timers.focus.running
-        ) {
 
-          phase.textContent =
-            "FOCUS SESSION — STAY FOCUSED";
+            ? "FOCUS SESSION — STAY FOCUSED"
 
-        }
-
-        else {
-
-          phase.textContent =
-            "READY — FOCUS SESSION";
-
-        }
+            : "READY — FOCUS SESSION";
 
       }
 
 
       else {
 
-
         focusCard.className =
           "timer-card";
 
@@ -956,21 +938,13 @@
           "timer-card active";
 
 
-        if (
+        phase.textContent =
+
           timers.break.running
-        ) {
 
-          phase.textContent =
-            "BREAK — TAKE A REST";
+            ? "BREAK — TAKE A REST"
 
-        }
-
-        else {
-
-          phase.textContent =
-            "READY — BREAK";
-
-        }
+            : "READY — BREAK";
 
       }
 
@@ -1003,7 +977,7 @@
 
 
       /*
-        Update digital time.
+        Update digital timer.
       */
 
       display.textContent =
@@ -1013,7 +987,7 @@
 
 
       /*
-        Determine how much time is left.
+        Determine percentage remaining.
       */
 
       const percentage =
@@ -1023,8 +997,8 @@
 
 
       /*
-        Convert remaining percentage
-        to SVG stroke offset.
+        Convert percentage into
+        SVG circle offset.
       */
 
       const offset =
@@ -1153,7 +1127,7 @@
 
 
       /*
-        Don't start a timer with no time.
+        Don't start at zero.
       */
 
       if (
@@ -1166,7 +1140,7 @@
 
 
       /*
-        Only one phase runs at a time.
+        Determine the other timer.
       */
 
       const other =
@@ -1177,6 +1151,10 @@
 
           : "focus";
 
+
+      /*
+        Only one timer runs at once.
+      */
 
       if (
         timers[other].running
@@ -1198,7 +1176,7 @@
 
 
       /*
-        Calculate exact deadline.
+        Calculate the exact finish time.
       */
 
       timer.deadline =
@@ -1238,7 +1216,9 @@
 
           function() {
 
-            tick(name);
+            tick(
+              name
+            );
 
           },
 
@@ -1275,7 +1255,8 @@
 
 
       /*
-        Use actual clock time.
+        Use actual clock time so the timer
+        doesn't drift.
       */
 
       timer.remaining =
@@ -1339,7 +1320,7 @@
 
 
       /*
-        Force exact 00:00 display.
+        Show exact 00:00.
       */
 
       timers[name].remaining =
@@ -1372,7 +1353,7 @@
 
 
       /*
-        Determine the next phase.
+        Determine next phase.
       */
 
       const nextPhase =
@@ -1385,8 +1366,7 @@
 
 
       /*
-        Keep completed timer visible
-        for a fraction of a second.
+        Brief transition.
       */
 
       transitionTimeout =
@@ -1400,7 +1380,8 @@
 
 
             /*
-              Reset next timer to full duration.
+              Restore next timer
+              to full duration.
             */
 
             timers[nextPhase].remaining =
@@ -1408,16 +1389,12 @@
               timers[nextPhase].total;
 
 
-            /*
-              Switch active phase.
-            */
-
             activePhase =
               nextPhase;
 
 
             /*
-              Automatically begin next phase.
+              Automatically start it.
             */
 
             startTimer(
@@ -1486,10 +1463,6 @@
           700;
 
 
-        /*
-          Fade in.
-        */
-
         gain.gain.setValueAtTime(
 
           0.001,
@@ -1508,10 +1481,6 @@
 
         );
 
-
-        /*
-          Fade out.
-        */
 
         gain.gain.exponentialRampToValueAtTime(
 
@@ -1557,11 +1526,11 @@
 
 
     /*
-      When index.html sends:
+      The Start screen opens:
 
       timer.html?autostart=true
 
-      automatically start Focus.
+      so Focus starts automatically.
     */
 
     if (
